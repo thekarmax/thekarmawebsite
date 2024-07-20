@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1SXNT94KLG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-1SXNT94KLG');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home - TheKarma</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <script src="Javascript\Index.js" defer></script>
+</head>
+<style>
+    #myModal {
+        font-family: Arial, sans-serif;
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        max-width: 400px;
+        text-align: center;
+        border-radius: 10px;
+    }
+
+    #myModal div {
+        margin-bottom: 10px;
+    }
+
+    #close_button {
+        background-color: #1100fd;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    #welcomeText {
+        color: black;
+    }
+
+    #modalText {
+        color: black;
+        margin-bottom: 0;
+    }
+
+    #contactMe {
+        color: black;
+        text-decoration: none;
+    }
+
+    #modalPrincipal {
+        padding-bottom: 10px;
+    }
+</style>
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <p><strong id="welcomeText"></strong></p>
+        <div id="modalPrincipal">
+            <p id="modalText"></p>
+            <strong><a id="contactMe" href="assistance.html">Contact me</a></strong>
+        </div>
+        <button onclick="closeModal()" id="close_button">Got it!</button>
+    </div>
+</div>
+
+<script>
+    var modal = document.getElementById('myModal');
+    var welcomeText = document.getElementById('welcomeText');
+    var modalText = document.getElementById('modalText');
+    var isFrench = false;
+    var modalDisplay = getCookie('modalDisplay');
+    if (modalDisplay === null) {
+        modalDisplay = 'block'
+    }
+    modal.style.display = modalDisplay;
+
+    function closeModal() {
+        modalDisplay = 'none'
+        modal.style.display = modalDisplay;
+        setCookie('modalDisplay', modalDisplay, 1);
+    }
+
+
+    // Function to set a cookie with the selected language
+    function setCookie(name, value, days) {
+        const expires = new Date();
+        expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+        document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+    }
+
+    // Function to get a cookie value by name
+    function getCookie(name) {
+        const cookies = document.cookie.split('; ');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].split('=');
+            if (cookie[0] === name) {
+                return cookie[1];
+            }
+        }
+        return null;
+    }
+
+    function switchLanguage(language) {
+        const languageData = {
+            'en': {
+                'welcomeText': 'Welcome to my site!',
+                'modalText': 'This website is currently under development and there may be some bugs. If you find a bug or have any suggestions,',
+                'contactMe': 'Contact me',
+                'closeButton': 'Got it!'
+            },
+            'fr': {
+                'welcomeText': 'Bienvenue sur mon site!',
+                'modalText': 'Ce site web est actuellement en développement et il pourrait y avoir quelques bugs. Si vous trouvez un bug ou si vous avez des suggestion , ',
+                'contactMe': 'Contactez-moi',
+                'closeButton': 'Compris!'
+            }
+        };
+
+        // Change content based on selected language
+        document.getElementById('welcomeText').innerText = languageData[language]['welcomeText'];
+        document.getElementById('modalText').innerText = languageData[language]['modalText'];
+        document.getElementById('close_button').innerText = languageData[language]['closeButton'];
+        document.getElementById('contactMe').innerText = languageData[language]['contactMe'];
+        setCookie('language', language, 30);
+    }
+
+    // Function to prompt user for preferred language
+    function askForLanguagePreference() {
+        let preferredLanguage = navigator.language || navigator.userLanguage;
+        if (preferredLanguage === 'fr-CA' || preferredLanguage === 'fr-FR') {
+            preferredLanguage = 'fr';
+        } else if (preferredLanguage === 'en-US' || preferredLanguage === 'en-CA' || preferredLanguage === 'en-GB') {
+            preferredLanguage = 'en';
+        } else if (preferredLanguage === null || preferredLanguage != 'fr' || preferredLanguage != 'en') {
+            preferredLanguage = prompt('Please choose your preferred language (en/fr):\n Veuillez choisir votre langue préférée (en/fr):');
+        }
+        if (preferredLanguage && (preferredLanguage === 'en' || preferredLanguage === 'fr')) {
+            switchLanguage(preferredLanguage);
+        }
+    }
+
+    // Function to apply the stored language preference or ask for preference if not found
+    function applyStoredLanguage() {
+        const storedLanguage = getCookie('language');
+        if (storedLanguage) {
+            switchLanguage(storedLanguage);
+        } else {
+            askForLanguagePreference();
+        }
+    }
+
+    // Call the function to apply the stored language preference when the page loads
+    applyStoredLanguage();
+
+
+</script>
+
+<body>
+    <nav>
+        <div class="menu-icon">
+            <span class="fas fa-bars"></span>
+        </div>
+        <div class="logo">
+            TheKarma
+        </div>
+        <div class="nav-items">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="information.html">Information</a></li>
+            <li><a href="projet.html">Projets</a></li>
+            <li><a href="produit.html">Produit</a></li>
+            <li><a href="assistance.html">Contactez-moi</a></li>
+
+        </div>
+        <div class="search-icon">
+            <span class="fas fa-search"></span>
+        </div>
+        <div class="cancel-icon">
+            <span class="fas fa-times"></span>
+        </div>
+        <form action="#">
+            <input type="search" class="search-data" placeholder="Search" required>
+            <button type="submit" class="fas fa-search"></button>
+        </form>
+    </nav>
+    </div>
+
+    <h1 id="hautpag">Salut Bienvenue sur mon sit web <br><br>TheKarmaDev</h1>
+
+    <footer>
+        <p>&copy; 2023 EdouardDev. Tous droits réservés.</p>
+    </footer>
+</body>
+
+</html>
